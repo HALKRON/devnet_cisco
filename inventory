@@ -1,0 +1,7 @@
+[routers]
+R1 ansible_user=ansible
+R2
+
+[switches]
+S1
+S2
