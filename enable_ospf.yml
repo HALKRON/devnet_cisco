@@ -1,0 +1,24 @@
+---
+
+- name: Manage Cisco devices
+  hosts: all
+  gather_facts: false
+  connection: local
+
+  vars:
+    cli:
+      username: ansible
+      password: Cisco123
+
+  tasks:
+    - name: Enable OSPF
+      ios_config:
+        provider: "{{ cli }}"
+        authorize: yes
+        parents: router ospf 1
+        lines:
+          - network 0.0.0.0 255.255.255.255 area 0
+
+      register: print_output
+
+    - debug: var=print_output
