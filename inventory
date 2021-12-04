@@ -1,7 +1,14 @@
 [routers]
-R1 ansible_user=ansible
-R2
+R1
 
-[switches]
-S1
-S2
+[switches:children]
+access_switches
+core_switches
+
+[access_switches]
+AS1
+AS2
+
+[core_switches]
+CS1
+CS2
