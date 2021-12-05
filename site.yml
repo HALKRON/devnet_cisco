@@ -1,0 +1,9 @@
+---
+
+- hosts: all
+  gather_facts: False
+  pre_tasks:
+  
+  - name: Test reachability to the internet
+    cisco.ios.ios_ping:
+      dest: "8.8.8.8"
