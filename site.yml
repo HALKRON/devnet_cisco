@@ -1,20 +1,33 @@
 ---
 
 - hosts: all
-  gather_facts: false
+  gather_facts: no
   pre_tasks:
   
-  - name: Test reachability to the internet
+  - name: Testing reachability to the internet
     ios_ping:
       dest: "8.8.8.8"
 
-  - name: Retrieve Running-Config
+  - name: Retrieving Running-Config
     ios_facts:
       gather_subset: 
         - config
 
-  - name: Copy Running-Config
+  - name: Copying Running-Config
     copy:
       content: "{{ ansible_net_config }}"
       dest: "./outputs/before_config/{{ ansible_host }}_config"
       backup: yes
+
+- hosts: routers
+  gather_facts: no
+  roles: 
+    - routers
+
+- hosts: all
+  gather_facts: no
+  tasks:
+
+  - name: Saving Running-Config
+    ios_config:
+      save_when: modified

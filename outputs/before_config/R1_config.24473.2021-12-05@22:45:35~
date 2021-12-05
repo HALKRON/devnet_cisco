@@ -1,5 +1,5 @@
 !
-! Last configuration change at 16:14:39 UTC Sun Dec 5 2021 by ansi
+! Last configuration change at 16:13:22 UTC Sun Dec 5 2021 by ansi
 !
 version 15.6
 service timestamps debug datetime msec
@@ -62,7 +62,7 @@ redundancy
 !
 interface Loopback0
  description * Loopback *
- ip address 1.1.1.1 255.255.255.255
+ no ip address
 !
 interface GigabitEthernet0/0
  ip address 192.168.100.211 255.255.255.0
@@ -72,13 +72,13 @@ interface GigabitEthernet0/0
 !
 interface GigabitEthernet0/1
  description * TO CS2* 
- ip address 172.16.2.0 255.255.255.254
+ no ip address
  duplex auto
  speed auto
 !
 interface GigabitEthernet0/2
  description * TO CS1 *
- ip address 172.16.1.0 255.255.255.254
+ no ip address
  duplex auto
  speed auto
 !
@@ -91,7 +91,6 @@ interface GigabitEthernet0/3
 !
 router ospf 1
  router-id 1.1.1.1
- passive-interface Loopback0
 !
 ip forward-protocol nd
 !
