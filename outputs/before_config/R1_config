@@ -1,5 +1,5 @@
 !
-! Last configuration change at 16:14:39 UTC Sun Dec 5 2021 by ansi
+! Last configuration change at 14:07:05 UTC Sun Dec 19 2021 by ansible
 !
 version 15.6
 service timestamps debug datetime msec
@@ -32,9 +32,8 @@ mmi snmp-timeout 180
 !
 !
 !
-ip domain name eve-ng
-ip name-server 8.8.8.8
-ip name-server 8.8.4.4
+ip domain name home
+ip name-server 192.168.200.1
 ip cef
 no ipv6 cef
 !
@@ -43,7 +42,7 @@ multilink bundle-name authenticated
 !
 !
 !
-username ansi privilege 15 secret 5 $1$HtoJ$Nb0d7XRyiKlLOmuSJkz/Y/
+username ansible privilege 15 secret 5 $1$df4l$UwXetzUhQIliZS5iPxLQg1
 !
 redundancy
 !
@@ -61,26 +60,28 @@ redundancy
 !
 !
 interface Loopback0
- description * Loopback *
+ description **Loop0**
  ip address 1.1.1.1 255.255.255.255
 !
 interface GigabitEthernet0/0
- ip address 192.168.100.211 255.255.255.0
+ ip address 192.168.200.211 255.255.255.0
  duplex auto
  speed auto
  media-type rj45
 !
 interface GigabitEthernet0/1
- description * TO CS2* 
- ip address 172.16.2.0 255.255.255.254
- duplex auto
- speed auto
-!
-interface GigabitEthernet0/2
- description * TO CS1 *
+ description **To-CS1**
  ip address 172.16.1.0 255.255.255.254
  duplex auto
  speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ description **To-CS2**
+ ip address 172.16.2.0 255.255.255.254
+ duplex auto
+ speed auto
+ media-type rj45
 !
 interface GigabitEthernet0/3
  no ip address
@@ -91,6 +92,7 @@ interface GigabitEthernet0/3
 !
 router ospf 1
  router-id 1.1.1.1
+ passive-interface GigabitEthernet0/0
  passive-interface Loopback0
 !
 ip forward-protocol nd
@@ -98,7 +100,7 @@ ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
-ip route 0.0.0.0 0.0.0.0 192.168.100.1
+ip route 0.0.0.0 0.0.0.0 192.168.200.1
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
@@ -140,10 +142,7 @@ line con 0
 line aux 0
 line vty 0 4
  login local
- transport input all
-line vty 5 15
- login local
- transport input all
+ transport input ssh
 !
 no scheduler allocate
 !

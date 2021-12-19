@@ -1,5 +1,5 @@
 !
-! Last configuration change at 09:49:49 UTC Sun Dec 19 2021
+! Last configuration change at 15:37:37 UTC Sat Dec 18 2021
 !
 version 15.2
 service timestamps debug datetime msec
@@ -7,14 +7,14 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 !
-hostname AS2
+hostname Node
 !
 boot-start-marker
 boot-end-marker
 !
 !
 !
-username ansible privilege 15 secret 5 $1$kkFC$bNqEQ4/O5iv9.Ku9lb8TB/
+username ansible privilege 15 secret 5 $1$ZMkV$giAuamJMz31cPf.78nHo2.
 no aaa new-model
 !
 !
@@ -129,9 +129,6 @@ banner login ^C
 line con 0
 line aux 0
 line vty 0 4
- login local
- transport input ssh
-line vty 5 15
  login local
  transport input ssh
 !

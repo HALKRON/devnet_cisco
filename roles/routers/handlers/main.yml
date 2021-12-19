@@ -1,0 +1,6 @@
+- name: restart_ospfv2
+  ios_command:
+    commands:
+      - command: 'clear ip ospf process'
+        prompt: 'Reset ALL OSPF processes? [no]: '
+        answer: 'yes\n'

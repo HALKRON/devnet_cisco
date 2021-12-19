@@ -1,41 +1,51 @@
 !
-! Last configuration change at 09:49:49 UTC Sun Dec 19 2021
+! Last configuration change at 10:06:56 UTC Sun Dec 19 2021 by ansible
 !
-version 15.2
+version 15.6
 service timestamps debug datetime msec
 service timestamps log datetime msec
 no service password-encryption
-service compress-config
 !
-hostname AS2
+hostname R1
 !
 boot-start-marker
 boot-end-marker
 !
 !
 !
-username ansible privilege 15 secret 5 $1$kkFC$bNqEQ4/O5iv9.Ku9lb8TB/
 no aaa new-model
 !
 !
 !
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
 !
 !
-no ip routing
 !
 !
 !
-ip domain-name home
+!
+!
+!
+!
+!
+!
+ip domain name home
 ip name-server 192.168.200.1
-no ip cef
+ip cef
 no ipv6 cef
 !
+multilink bundle-name authenticated
 !
 !
-spanning-tree mode rapid-pvst
-spanning-tree extend system-id
 !
-vlan internal allocation policy ascending
+!
+username ansible privilege 15 secret 5 $1$df4l$UwXetzUhQIliZS5iPxLQg1
+!
+redundancy
+!
 !
 ! 
 !
@@ -49,50 +59,51 @@ vlan internal allocation policy ascending
 !
 !
 !
+interface Loopback0
+ description * Loopback *
+ ip address 1.1.1.1 255.255.255.255
 !
 interface GigabitEthernet0/0
+ ip address 192.168.200.211 255.255.255.0
+ duplex auto
+ speed auto
  media-type rj45
- negotiation auto
 !
 interface GigabitEthernet0/1
+ description * TO CS2* 
+ ip address 172.16.2.0 255.255.255.254
+ duplex auto
+ speed auto
  media-type rj45
- negotiation auto
 !
 interface GigabitEthernet0/2
+ description * TO CS1 *
+ ip address 172.16.1.0 255.255.255.254
+ duplex auto
+ speed auto
  media-type rj45
- negotiation auto
 !
 interface GigabitEthernet0/3
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
  media-type rj45
- negotiation auto
 !
-interface GigabitEthernet1/0
- media-type rj45
- negotiation auto
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface Loopback0
 !
-interface GigabitEthernet1/1
- media-type rj45
- negotiation auto
-!
-interface GigabitEthernet1/2
- media-type rj45
- negotiation auto
-!
-interface GigabitEthernet1/3
- media-type rj45
- negotiation auto
-!
-interface Vlan1
- ip address 192.168.200.232 255.255.255.0
-!
-ip default-gateway 192.168.200.1
 ip forward-protocol nd
+!
 !
 no ip http server
 no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 192.168.200.1
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 !
-!
-!
+ipv6 ioam timestamp
 !
 !
 !
@@ -131,9 +142,7 @@ line aux 0
 line vty 0 4
  login local
  transport input ssh
-line vty 5 15
- login local
- transport input ssh
 !
+no scheduler allocate
 !
 end

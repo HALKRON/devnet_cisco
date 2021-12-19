@@ -1,5 +1,5 @@
 !
-! Last configuration change at 09:49:49 UTC Sun Dec 19 2021
+! Last configuration change at 10:54:30 UTC Sun Dec 5 2021 by ansi
 !
 version 15.2
 service timestamps debug datetime msec
@@ -7,27 +7,27 @@ service timestamps log datetime msec
 no service password-encryption
 service compress-config
 !
-hostname AS2
+hostname CS2
 !
 boot-start-marker
 boot-end-marker
 !
 !
 !
-username ansible privilege 15 secret 5 $1$kkFC$bNqEQ4/O5iv9.Ku9lb8TB/
+username ansi privilege 15 secret 5 $1$X8jY$qBEx/alT2cTy6KBvP3MnJ/
 no aaa new-model
 !
 !
 !
 !
 !
-no ip routing
 !
 !
 !
-ip domain-name home
-ip name-server 192.168.200.1
-no ip cef
+ip domain-name eve-ng
+ip name-server 8.8.8.8
+ip name-server 8.8.4.4
+ip cef
 no ipv6 cef
 !
 !
@@ -50,10 +50,6 @@ vlan internal allocation policy ascending
 !
 !
 !
-interface GigabitEthernet0/0
- media-type rj45
- negotiation auto
-!
 interface GigabitEthernet0/1
  media-type rj45
  negotiation auto
@@ -64,6 +60,11 @@ interface GigabitEthernet0/2
 !
 interface GigabitEthernet0/3
  media-type rj45
+ negotiation auto
+!
+interface GigabitEthernet0/0
+ no switchport
+ ip address 192.168.100.222 255.255.255.0
  negotiation auto
 !
 interface GigabitEthernet1/0
@@ -82,15 +83,12 @@ interface GigabitEthernet1/3
  media-type rj45
  negotiation auto
 !
-interface Vlan1
- ip address 192.168.200.232 255.255.255.0
-!
-ip default-gateway 192.168.200.1
 ip forward-protocol nd
 !
 no ip http server
 no ip http secure-server
 !
+ip route 0.0.0.0 0.0.0.0 192.168.100.1
 !
 !
 !

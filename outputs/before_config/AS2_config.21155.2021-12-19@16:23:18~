@@ -1,5 +1,5 @@
 !
-! Last configuration change at 09:49:49 UTC Sun Dec 19 2021
+! Last configuration change at 09:26:06 UTC Sun Dec 19 2021
 !
 version 15.2
 service timestamps debug datetime msec
@@ -135,5 +135,6 @@ line vty 5 15
  login local
  transport input ssh
 !
+ntp server devicehelper.cisco.com
 !
 end

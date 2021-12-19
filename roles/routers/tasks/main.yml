@@ -6,30 +6,53 @@
     config:
     - name: GigabitEthernet0/1
       enabled: true
-      description: "* TO CS2* "
+      description: "**To-CS1**"
 
     - name: GigabitEthernet0/2
       enabled: true
-      description: "* TO CS1 *"
+      description: "**To-CS2**"
 
     - name: Loopback0
       enabled: true
-      description: "* Loopback *"
+      description: "**Loop0**"
 
-- name: Configuring L3 interfaces
-  tags: routers,l3interface,ip
-  ios_l3_interfaces:
-    config:
-    - name: GigabitEthernet0/1
-      ipv4:
-      - address: 172.16.2.0/31
-    - name: GigabitEthernet0/2
-      ipv4:
-      - address: 172.16.1.0/31
-    - name: Loopback0
-      ipv4:
-      - address: 1.1.1.1/32
-    state: replaced
+- tags: routers,l3interface,ip
+  block:
+  - name: Configuring L3 interfaces
+    ios_l3_interfaces:
+      config:
+      - name: GigabitEthernet0/1
+        ipv4:
+        - address: 172.16.1.0/31
+      - name: GigabitEthernet0/2
+        ipv4:
+        - address: 172.16.2.0/31
+      - name: Loopback0
+        ipv4:
+        - address: 1.1.1.1/32
+      state: replaced
+  rescue:
+  - name: Defaulting interfaces
+    ios_l3_interfaces:
+      config:
+      - name: GigabitEthernet0/1
+      - name: GigabitEthernet0/2
+      - name: Loopback0
+      state: deleted
+
+  - name: Reconfigurating interfaces
+    ios_l3_interfaces:
+      config:
+      - name: GigabitEthernet0/1
+        ipv4:
+        - address: 172.16.1.0/31
+      - name: GigabitEthernet0/2
+        ipv4:
+        - address: 172.16.2.0/31
+      - name: Loopback0
+        ipv4:
+        - address: 1.1.1.1/32
+      state: replaced
 
 - name: Configuring OSPFv2
   tags: routers,ospf,routing,dynamic
@@ -46,6 +69,8 @@
             set_interface: true
             name:
               - Loopback0
+              - GigabitEthernet0/0
         router_id: 1.1.1.1
     state: replaced
-    
+
+  # notify: restart_ospfv2
